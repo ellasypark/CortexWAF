@@ -8,6 +8,7 @@ import HourlyChart from './components/HourlyChart';
 import AttackTypeChart from './components/AttackTypeChart';
 import RuleManagement from './components/RuleManagement';
 import LogTable from './components/LogTable';
+import RagRecommendations from './components/RagRecommendations';
 import DetailedAnalysis from './components/DetailedAnalysis';
 
 // ★ 날짜 필터 컴포넌트 (그리드 위 우측)
@@ -206,6 +207,8 @@ function AppContent() {
           attackTypeColors={attackTypeColors}
           isDarkMode={isDarkMode}
         />
+
+        <RagRecommendations />
 
         {/* 최하단: 로그 테이블 */}
         <LogTable logs={logs} />

@@ -1,12 +1,12 @@
 # CortexWAF
 
 **AI-driven AWS WAF log analysis and automated rule management.**
-CortexWAF loads AWS WAF logs, displays attack statistics, and supports rule management through a React dashboard. A separate Amazon Bedrock / Claude pipeline classifies events and routes them to blocking or review. The proposed next stage connects these paths with retrieval-augmented generation (RAG), cited evidence, and analyst feedback.
+CortexWAF loads AWS WAF logs, displays attack statistics, and supports rule management through a React dashboard. A separate Amazon Bedrock / Claude pipeline classifies events and routes them to blocking or review. An optional LangChain RAG pipeline now provides vector retrieval, cited rule-family recommendations, a dashboard review panel, and persisted analyst feedback. See [RAG setup and evaluation](docs/RAG.md). Live quality metrics have not yet been measured.
 
 ![CortexWAF project overview](image.png)
 
 <!-- TODO: replace with your own hosted badges or remove -->
-![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
 ![AWS](https://img.shields.io/badge/AWS-WAF%20%7C%20S3%20%7C%20Bedrock-232F3E?logo=amazonaws&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -32,7 +32,7 @@ AWS WAF produces high-volume logs, but deciding *which* managed rules to enable 
 1. **Collect** WAF logs from S3 (gzip, auto-decompressed).
 2. **Detect** attack signatures (SQLi, XSS, command injection, path traversal, file inclusion).
 3. **Score** current risk on a dynamic 0–100 scale.
-4. **Analyze** events with Bedrock / Claude. Dashboard rule cards currently use templates and log statistics; connecting them to LLM verdicts is planned.
+4. **Analyze** events with Bedrock / Claude. Dashboard rule cards currently use templates and log statistics; the separate RAG panel offers evidence-backed candidate recommendations.
 5. **Apply / remove** rules through `boto3`, with the risk score updating live as rules toggle.
 6. **Notify & report** — Slack alerts and a downloadable PDF report.
 
@@ -61,7 +61,7 @@ flowchart LR
     Auto --> Pending[(DynamoDB pending reviews)]
 ```
 
-The analysis modules expose Lambda handlers, and `test_local.py` chains the stages locally. The repository does not include a Step Functions state-machine definition. The dashboard currently generates its own rule cards rather than reading persisted LLM verdicts. The original overview above illustrates infrastructure intent, not a verified deployment.
+The analysis modules expose Lambda handlers, and `test_local.py` chains the stages locally. The repository does not include a Step Functions state-machine definition. The dashboard retains its template-based rule cards and additionally displays persisted recommendations from the optional RAG service. The original overview above illustrates infrastructure intent, not a verified deployment.
 
 ### Proposed expanded AWS architecture
 
@@ -80,7 +80,7 @@ This target design extends the original architecture with knowledge retrieval, t
 5. **Evaluate changes:** validate proposed rules, test in staging, observe in Count mode, and obtain approval before enabling blocking.
 6. **Measure:** compare the existing prompt with RAG using labeled cases, false positives, missed attacks, and citation accuracy.
 
-The workflow image summarizes these connections; evidence retrieval feeds Analysis, enrichment feeds Detection, and curated feedback originates from the security analyst. RAG and these integrations are not implemented by this documentation update. Existing automatic blocking uses the model verdict and confidence threshold; the proposed policy checks replace confidence-only authorization. The prompt currently names investigation tools, but their execution loop is not implemented.
+The workflow image summarizes these connections; evidence retrieval feeds Analysis, enrichment feeds Detection, and curated feedback originates from the security analyst. The optional RAG module implements curated JSON ingestion, vector retrieval, citations, and saved reviews. The complete architecture shown above—including automatic log enrichment, feedback promotion, and deployment testing—is still a target design. Existing automatic blocking uses the model verdict and confidence threshold; the proposed policy checks replace confidence-only authorization. The prompt currently names investigation tools, but their execution loop is not implemented.
 
 ## Risk scoring model
 
@@ -94,14 +94,14 @@ The dashboard uses a **heuristic, dynamic risk score**. It is not a calibrated p
 ## Key features
 
 - **Real-time dashboard** — geographic attack map, hourly attack timeline, monthly attack-type breakdown.
-- **Rule management** — template-based rule cards with one-click apply/remove and dynamic risk recalculation. Evidence-backed LLM recommendations are planned.
+- **Rule management** — template-based rule cards with one-click apply/remove and dynamic risk recalculation. A separate LangChain RAG panel now supports cited rule-family recommendations and analyst review; accepting a candidate does not deploy it.
 - **S3 log pipeline** — automatic collection and gzip handling (up to 1,000 recent logs).
 - **Pattern-based detection** — SQLi, XSS, command injection, path traversal, file inclusion.
 - **Slack alerting + PDF reporting** — operational notifications and shareable reports.
 
 ## Tech stack
 
-**Backend** — Python 3.8+, Flask, boto3, Amazon Bedrock (Claude), ReportLab, AbuseIPDB API
+**Backend** — Python 3.10+, Flask, boto3, Amazon Bedrock (Claude / Titan embeddings), LangChain, SQLite, ReportLab, AbuseIPDB API
 **Frontend** — React 18, Axios, Leaflet (maps), Recharts (charts)
 **Infra** — AWS WAF, S3, Step Functions
 

@@ -63,3 +63,6 @@ data/*.txt
 # Temporary
 *.tmp
 *.bak
+
+# RAG indexes and analyst decisions
+data/rag/

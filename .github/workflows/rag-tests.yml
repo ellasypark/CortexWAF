@@ -1,0 +1,24 @@
+name: RAG integration tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt pytest
+      - run: python -m pytest tests/test_rag.py -q
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+        working-directory: frontend
+      - run: npm test -- --watchAll=false --runInBand RagRecommendations.test.js
+        working-directory: frontend
+        env:
+          CI: 'true'

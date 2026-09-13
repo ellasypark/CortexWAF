@@ -45,6 +45,9 @@ except ImportError:
 app = Flask(__name__)
 CORS(app)
 
+from rag.api import create_blueprint
+app.register_blueprint(create_blueprint())
+
 # ==========================================
 # AWS WAF 설정
 # ==========================================

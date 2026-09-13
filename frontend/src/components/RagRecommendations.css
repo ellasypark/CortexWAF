@@ -1,0 +1,18 @@
+.rag-panel { margin: 24px 0; padding: 24px; border: 1px solid #94a3b866; border-radius: 14px; background: var(--card-bg, #fff); color: var(--text-primary, #172033); }
+.rag-panel h2 { margin-top: 0; }
+.rag-panel label { display: block; margin: 14px 0 6px; font-weight: 600; }
+.rag-panel textarea, .rag-panel input { box-sizing: border-box; width: 100%; padding: 10px; border: 1px solid #94a3b8; border-radius: 6px; background: inherit; color: inherit; }
+.rag-panel textarea { font-family: monospace; }
+.rag-panel button { margin: 12px 8px 0 0; padding: 10px 16px; background: #2458a6; color: white; border: 0; border-radius: 6px; cursor: pointer; }
+.rag-panel button:disabled { opacity: .5; cursor: default; }
+.rag-notice { padding: 12px; border-left: 4px solid #d69627; }
+.rag-metrics { display: flex; flex-wrap: wrap; gap: 24px; margin: 20px 0; }
+.rag-card { margin-top: 18px; padding: 18px; border: 1px solid #94a3b866; border-radius: 8px; overflow-wrap: anywhere; }
+.rag-card h3 { margin-top: 0; }
+.rag-source { padding: 12px 0; }
+.rag-source a { color: #327bd9; }
+.rag-panel [role="alert"] { color: #c43a39; }
+.rag-panel summary { cursor: pointer; }
+
+.rag-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+.rag-fields select { display: block; width: 100%; padding: 10px; border: 1px solid #94a3b8; border-radius: 6px; background: inherit; color: inherit; }

@@ -1,0 +1,26 @@
+[
+  {
+    "title": "SQL injection rule candidate",
+    "source": "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-sqli-match.html",
+    "application": "*", "version": "*",
+    "text": "CortexWAF curated guidance: SQL injection match statements inspect a selected request component for SQL injection. For a SQLI event, investigate the matched rule and endpoint's expected input. A detection label alone does not establish a true attack. Legitimate SQL snippets in an application can require scoped exceptions. Recommend only a SQLI candidate for analyst review, then Count-mode testing. Verify field selection, transformations, and sensitivity against the linked AWS documentation and application behavior before deployment. No traffic false-positive estimate is supplied by this guidance."
+  },
+  {
+    "title": "Cross-site scripting rule candidate",
+    "source": "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-xss-match.html",
+    "application": "*", "version": "*",
+    "text": "CortexWAF curated guidance: XSS match statements inspect a request component for cross-site scripting. Investigate XSS detections with the endpoint's expected behavior. Code sharing, rich text, and developer forum endpoints may legitimately contain markup. Missing application context should produce a review request, not an assumption of malicious intent. A proposed XSS rule requires Count-mode observation and analyst validation before blocking. Consult the linked AWS reference for statement options."
+  },
+  {
+    "title": "Rate-based rule candidate",
+    "source": "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-rate-based.html",
+    "application": "*", "version": "*",
+    "text": "CortexWAF curated guidance: Rate-based rules aggregate and rate-limit requests using configured criteria. A RATE_LIMIT recommendation requires observed request count, measurement window, endpoint context, and a legitimate traffic baseline. Shared NAT clients and expected bursts can make IP-only limits inappropriate. Do not invent a threshold from an attack label or a single request. Start with a Count-mode candidate and validate aggregation and scope before deployment. Consult AWS documentation for supported settings."
+  },
+  {
+    "title": "Count-mode evaluation",
+    "source": "https://docs.aws.amazon.com/waf/latest/developerguide/web-acl-testing.html",
+    "application": "*", "version": "*",
+    "text": "CortexWAF curated guidance: Evaluate proposed WAF changes with Count action and inspect resulting traffic before enabling blocking. Analyst acceptance is accepted recommendations divided by reviewed recommendations. Traffic false-positive rate is benign requests that the candidate would block divided by all labeled benign requests. These are different measurements; model confidence and heuristic risk scores establish neither. Independently label held-out traffic, report sample sizes and attack recall, and preserve legitimate traffic coverage."
+  }
+]
