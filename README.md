@@ -3,7 +3,9 @@
 **AI-driven AWS WAF log analysis and automated rule management.**
 CortexWAF loads AWS WAF logs, displays attack statistics, and supports rule management through a React dashboard. A separate Amazon Bedrock / Claude pipeline classifies events and routes them to blocking or review. An optional LangChain RAG pipeline now provides vector retrieval, cited rule-family recommendations, a dashboard review panel, and persisted analyst feedback. See [RAG setup and evaluation](docs/RAG.md). Live quality metrics have not yet been measured.
 
-![CortexWAF project overview](image.png)
+### Ver 1 — Original Architecture
+
+![CortexWAF Ver 1 architecture](image.png)
 
 <!-- TODO: replace with your own hosted badges or remove -->
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
@@ -38,7 +40,7 @@ AWS WAF produces high-volume logs, but deciding *which* managed rules to enable 
 
 ## Architecture
 
-### Current code paths
+### Ver 1 — Code Paths
 
 The repository contains two separate paths:
 
@@ -63,15 +65,15 @@ flowchart LR
 
 The analysis modules expose Lambda handlers, and `test_local.py` chains the stages locally. The repository does not include a Step Functions state-machine definition. The dashboard retains its template-based rule cards and additionally displays persisted recommendations from the optional RAG service. The original overview above illustrates infrastructure intent, not a verified deployment.
 
-### Proposed expanded AWS architecture
+### Ver 2 — Expanded AWS Architecture
 
-![CortexWAF proposed AWS architecture with RAG, traffic counters, persisted verdicts, and reviewed rule updates](docs/images/aws-architecture.png)
+![CortexWAF Ver 2 AWS architecture with RAG, traffic counters, persisted verdicts, and reviewed rule updates](docs/images/aws-architecture.png)
 
 This target design extends the original architecture with knowledge retrieval, traffic counters, persisted analysis results, and an approval and testing path for WAF updates. Managed AWS services are shown separately from VPC application compute. Cyan highlights proposed capabilities; the diagram is conceptual rather than deployable infrastructure configuration.
 
-### Proposed LLM + RAG workflow
+### Ver 2 — LLM + RAG Workflow
 
-![CortexWAF proposed LLM and RAG workflow with knowledge ingestion, evidence retrieval, analyst feedback, and evaluation](docs/images/llm-rag-workflow.png)
+![CortexWAF Ver 2 LLM and RAG workflow with knowledge ingestion, evidence retrieval, analyst feedback, and evaluation](docs/images/llm-rag-workflow.png)
 
 1. **Prepare evidence:** normalize events, redact secrets, and calculate actual traffic statistics. IP reputation and counters enrich the Detection stage.
 2. **Retrieve context:** ingest rule documentation, application/API schemas, and analyst-reviewed incidents; filter retrieval by application, endpoint, rule, and version.
