@@ -13,7 +13,7 @@ CortexWAF loads AWS WAF logs, displays attack statistics, and supports rule mana
 ![AWS](https://img.shields.io/badge/AWS-WAF%20%7C%20S3%20%7C%20Bedrock-232F3E?logo=amazonaws&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> 🥇 Built at MegazoneCloud's internal Megathon — 1st place. <!-- TODO: confirm exact event name / ranking / # of teams -->
+> 🥇 Built at AWS and MegazoneCloud Hackathon — Top place. <!-- TODO: confirm exact event name / ranking / # of teams -->
 
 ---
 
